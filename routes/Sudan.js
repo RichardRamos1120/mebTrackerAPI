@@ -1,36 +1,36 @@
 const express = require('express');
 const app = express();
 
-// Import the Kenya model
-const kenya = require('../models/Kenya');
+// Import the sudan model
+const sudan = require('../models/Sudan');
 
 // Import the calculateMEB function
 const calculateMEB = require('../utils/CalculateMeb');
 
 
-// display all the data in the database for kenya
+// display all the data in the database for sudan
 app.get('/', async (req, res,next) => {
-    const kenyaData = await kenya.find();
+    const sudanData = await sudan.find();
     
     res.status(200).json({
-        message: 'Welcome to the Kenya API',
-        kenyaData
+        message: 'Welcome to the sudan API',
+        sudanData
     }); 
 });
 
 
-// process the data sent for kenya
+// process the data sent for sudan
 app.post('/', async (req, res,next) => {
 
     // Get the data from the request body
     const { latitude, longitude, Food, Housing, Healthcare, Transportation, Education, Utilities, Clothing, PersonalCare, Communication, Savings, Other } = req.body;
-    const newKenya = new kenya({latitude, longitude, Food, Housing, Healthcare, Transportation, Education, Utilities, Clothing, PersonalCare, Communication, Savings, Other});
+    const newSudan = new sudan({latitude, longitude, Food, Housing, Healthcare, Transportation, Education, Utilities, Clothing, PersonalCare, Communication, Savings, Other});
 
-    const savedKenya = await newKenya.save();
+    const savedsudan = await newsudan.save();
 
     res.status(201).json({
-        message: 'Kenya data saved successfully!',
-        savedKenya
+        message: 'sudan data saved successfully!',
+        savedsudan
     }); 
 });
 
@@ -41,17 +41,17 @@ const weights = [0.25, 0.2, 0.15, 0.1, 0.1, 0.05, 0.05, 0.03, 0.03, 0.02, 0.02];
 app.get('/meb', async (req, res,next) => {
 
     // get the data for a specific month
-    let kenyaData = await kenya.find({
+    let sudanData = await sudan.find({
         // Add query parameters here
         created_at: {
             $gte: new Date('2024-04-01'),
             $lte: new Date('2024-04-30')
         }
     });
-    kenyaData = kenyaData[0]
+    sudanData = sudanData[0]
 
     // Extract the prices from the data
-    const prices = [kenyaData.Food, kenyaData.Housing, kenyaData.Healthcare, kenyaData.Transportation, kenyaData.Education, kenyaData.Utilities, kenyaData.Clothing, kenyaData.PersonalCare, kenyaData.Communication, kenyaData.Savings, kenyaData.Other]
+    const prices = [sudanData.Food, sudanData.Housing, sudanData.Healthcare, sudanData.Transportation, sudanData.Education, sudanData.Utilities, sudanData.Clothing, sudanData.PersonalCare, sudanData.Communication, sudanData.Savings, sudanData.Other]
 
     // Calculate the MEB
     const meb = calculateMEB(prices, weights);
