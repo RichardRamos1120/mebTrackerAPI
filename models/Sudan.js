@@ -14,6 +14,8 @@ const SudanSchema = new mongoose.Schema({
     Communication:Number,
     Savings:Number,
     Other:Number,
+    Month:String,
+    Year:String,
     updated_at: { type: Date, default: Date.now },
     created_at: { type: Date, default: Date.now },
 
